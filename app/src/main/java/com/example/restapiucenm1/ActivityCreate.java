@@ -64,6 +64,7 @@ public class ActivityCreate extends AppCompatActivity {
         setContentView(R.layout.activity_create);
 
 
+
         imageView =(ImageView) findViewById(R.id.imageView);
         btnfoto =(Button) findViewById(R.id.btntakefoto);
         btncreate =(Button) findViewById(R.id.btncreate);
@@ -226,7 +227,26 @@ public class ActivityCreate extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    private void cargarDatosDeIntent() {
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("id")) {
+            idpersona.setText(intent.getStringExtra("id"));
+            nombres.setText(intent.getStringExtra("nombres"));
+            apellidos.setText(intent.getStringExtra("apellidos"));
+            direccion.setText(intent.getStringExtra("direccion"));
+            telefono.setText(intent.getStringExtra("telefono"));
+            fechanac.setText(intent.getStringExtra("fechanac"));
 
+            String fotoBase64 = intent.getStringExtra("foto");
+            if (fotoBase64 != null && !fotoBase64.isEmpty()) {
+                byte[] decodedString = Base64.decode(fotoBase64, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                imageView.setImageBitmap(decodedByte);
+                // Guarda currentPhotoPath como null para evitar enviar foto vacía
+                currentPhotoPath = null;
+            }
+        }
+    }
 
     private String ConvertImageBase64(String path)
     {
@@ -368,4 +388,5 @@ public class ActivityCreate extends AppCompatActivity {
         }
 
     }
+
 }
